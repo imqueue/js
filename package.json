@@ -1,6 +1,6 @@
 {
   "name": "@imqueue/js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "JavaScript routines for @imqueue framework",
   "main": "index.js",
   "scripts": {
