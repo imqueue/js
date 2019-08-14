@@ -79,4 +79,32 @@ export namespace js {
     export function isArray(value: any) {
         return Array.isArray(value);
     }
+
+    /**
+     * Checks if given value is a valid date
+     *
+     * @param {any} value
+     * @return {boolean}
+     */
+    export function isDate(value: any): boolean {
+        if (!value) {
+            return false;
+        }
+
+        if (!(value instanceof Date)) {
+            value = new Date(value);
+        }
+
+        return String(value) !== 'Invalid Date';
+    }
+
+    /**
+     * Checks if a given object is string
+     *
+     * @param {any} value
+     * @return {boolean}
+     */
+    export function isString(value: any): boolean {
+        return typeof value === 'string';
+    }
 }
