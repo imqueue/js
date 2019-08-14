@@ -23,6 +23,8 @@ import isOk = js.isOk;
 import isNumeric = js.isNumeric;
 import isEmpty = js.isEmpty;
 import isArray = js.isArray;
+import isString = js.isString;
+import isDate = js.isDate;
 
 class A {}
 
@@ -84,13 +86,39 @@ describe('js', () => {
             [
                 1, { a: '' }, '123', 'aaa', 0, -1, true, false, null, undefined,
                 new A(), new Map(), new Set(),
-            ]
-                .forEach(value => expect(isArray(value)).to.be.false);
+            ].forEach(value => expect(isArray(value)).to.be.false);
         });
         it('should return true if given value is array', () => {
             // noinspection JSConsecutiveCommasInArrayLiteral
             [[], [1, 2, 3], [new A(), {}, []]]
                 .forEach(value => expect(isArray(value)).to.be.true);
+        });
+    });
+    describe('isString()', () => {
+        it('should return false if given value is not string', () => {
+            [
+                1, { a: '' }, 0, -1, true, false, null, undefined,
+                new A(), new Map(), new Set(),
+            ].forEach(value => expect(isString(value)).to.be.false);
+        });
+        it('should return true if given value is string', () => {
+            // noinspection JSConsecutiveCommasInArrayLiteral
+            ['', 'aaa', String(null), String({})]
+                .forEach(value => expect(isString(value)).to.be.true);
+        });
+    });
+    describe('isDate()', () => {
+        it('should return false if given value is not valid date', () => {
+            [
+                1, { a: '' }, 0, -1, true, false, null, undefined, '',
+                new A(), new Map(), new Set(), new Date(undefined as any),
+                '2019-15-14T09:46:57.785Z', '2019-08-41T09:46:57.785Z',
+            ].forEach(value => expect(isDate(value)).to.be.false);
+        });
+        it('should return true if given value is valid date', () => {
+            // noinspection JSConsecutiveCommasInArrayLiteral
+            ['2019-08-14T09:46:57.785Z', new Date()]
+                .forEach(value => expect(isDate(value)).to.be.true);
         });
     });
 });

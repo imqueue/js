@@ -87,11 +87,11 @@ export namespace js {
      * @return {boolean}
      */
     export function isDate(value: any): boolean {
-        if (!value) {
+        if (!(value instanceof Date || isString(value))) {
             return false;
         }
 
-        if (!(value instanceof Date)) {
+        if (isString(value)) {
             value = new Date(value);
         }
 
