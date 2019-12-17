@@ -9,7 +9,7 @@
     "mocha": "nyc mocha",
     "show:test": "/usr/bin/env node -e \"require('open')('file://`pwd`/coverage/index.html',{wait:false});\"",
     "show:doc": "/usr/bin/env node -e \"require('open')('file://`pwd`/docs/index.html',{wait:false});\"",
-    "test": "npm run build && npm run mocha ; npm run show:test",
+    "test": "npm run build && npm run mocha && npm run show:test",
     "clean:dts": "find . -name '*.d.ts' -not -wholename '*node_modules*' -type f -delete",
     "clean:map": "find . -name '*.js.map' -not -wholename '*node_modules*' -type f -delete",
     "clean:js": "find . -name '*.js' -not -wholename '*node_modules*' -type f -delete",
