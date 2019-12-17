@@ -71,4 +71,29 @@ export namespace object {
 
         return o;
     }
+
+    /**
+     * Recursively checks if property contains value.
+     * If no - it will be deleted from object
+     *
+     * @param {any} obj
+     * @returns {boolean}
+     */
+    export function clearObject(obj: any): boolean {
+        let isEmpty = false;
+
+        for (const [key, value] of Object.entries(obj)) {
+
+            isEmpty = js.isEmpty(value) ? true
+                : js.isObject(value) ? clearObject(value) : false;
+
+
+            if (isEmpty) {
+                delete obj[key];
+                isEmpty = false;
+
+            }
+        }
+        return isEmpty;
+    }
 }
