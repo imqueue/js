@@ -80,13 +80,13 @@ export namespace object {
      * @returns {boolean}
      */
     export function clearObject(obj: any): boolean {
-        let isEmpty = false;
+        let isEmpty = true;
 
         for (const [key, value] of Object.entries(obj)) {
 
             isEmpty = js.isEmpty(value) ? true
-                : js.isObject(value) ? clearObject(value) : false;
-
+                : js.isObject(value)
+                    ? clearObject(value) || js.isEmpty(value) : false;
 
             if (isEmpty) {
                 delete obj[key];
