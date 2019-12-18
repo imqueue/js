@@ -20,27 +20,68 @@ import { expect } from 'chai';
 import { object } from '../../src';
 import contains = object.contains;
 import get = object.get;
+import clearObject = object.clearObject;
 
 describe('object', () => {
     describe('contains()', () => {
         it('should return true if object contains given path', () => {
-            expect(contains({ a: { b: { c: false }}}, 'a.b.c')).is.true;
+            expect(contains({ a: { b: { c: false } } }, 'a.b.c')).is.true;
             expect(contains(null, 'a.b.c')).is.false;
             expect(contains([], 'a.b.c')).is.false;
         });
         it('should return false if given object does not contain path', () => {
-            expect(contains({ a: { b: true }}, 'a.b.c')).is.false;
+            expect(contains({ a: { b: true } }, 'a.b.c')).is.false;
         });
     });
     describe('get()', () => {
         it('should return value stored under given property or undefined',
-        () => {
-            expect(get({ a: { b: { c: false }}}, 'a.b.c')).is.false;
-            expect(get({ a: { b: { c: false }}}, 'a.b.c.d')).is.undefined;
-            expect(get({ a: { b: { c: false }}}, ''))
-                .deep.equals({ a: { b: { c: false }}});
-            expect(get({ a: { b: { c: false }}}, 'a.b'))
-                .deep.equals({ c: false });
-        });
+            () => {
+                expect(get({ a: { b: { c: false } } }, 'a.b.c')).is.false;
+                expect(get({ a: { b: { c: false } } }, 'a.b.c.d')).is.undefined;
+                expect(get({ a: { b: { c: false } } }, ''))
+                    .deep.equals({ a: { b: { c: false } } });
+                expect(get({ a: { b: { c: false } } }, 'a.b'))
+                    .deep.equals({ c: false });
+            });
+    });
+
+    describe('clearObject()', () => {
+        it('should return object without empty properties including inner objects',
+            () => {
+                const testObjSource = {
+                    prop1: false,
+                    prop2: 1,
+                    prop3: '',
+                    prop4: 0,
+                    prop5: [1, 2, 3],
+                    prop6: [],
+                    prop7: null,
+                    prop8: {
+                        innerProp1: null,
+                        innerProp2: undefined,
+                        innerProp3: 'string',
+                        innerProp4: [],
+                        innerProp5: {
+                            innerInnerProp1: [],
+                            innerInnerProp2: 10,
+                        },
+                    },
+                };
+                const expected = {
+                    prop1: false,
+                    prop2: 1,
+                    prop4: 0,
+                    prop5: [1, 2, 3],
+                    prop8: {
+                        innerProp3: 'string',
+                        innerProp5: {
+                            innerInnerProp2: 10,
+                        },
+                    },
+                };
+
+                clearObject(testObjSource);
+                expect(testObjSource).deep.equals(expected);
+            });
     });
 });
