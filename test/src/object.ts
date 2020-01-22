@@ -21,6 +21,7 @@ import { object } from '../../src';
 import contains = object.contains;
 import get = object.get;
 import clearObject = object.clearObject;
+import deepExtends = object.deepExtends;
 
 describe('object', () => {
     describe('contains()', () => {
@@ -46,7 +47,8 @@ describe('object', () => {
     });
 
     describe('clearObject()', () => {
-        it('should return object without empty properties including inner objects',
+        it('should return object without empty properties ' +
+            'including inner objects',
             () => {
                 const testObjSource = {
                     prop1: false,
@@ -82,6 +84,37 @@ describe('object', () => {
 
                 clearObject(testObjSource);
                 expect(testObjSource).deep.equals(expected);
+            });
+    });
+
+    describe('deepExtends()', () => {
+        it('should return object with extended fields',
+            () => {
+                const target = {
+                    field1: 1,
+                    field2: {
+                        subField1: 3,
+                        subObject: {
+                            subObjectField1: 2,
+                        }
+                    },
+                    arrayObj: [{ a: 1}],
+                    field3: [1, 2, 3]
+                };
+
+                deepExtends(target, {
+                    field5: 4,
+                    field2: {
+                        subField2: 5,
+                        subObject: {
+                            subObjectField2: 3,
+                        }
+                    },
+                    field3: [4, 5],
+                    arrayObj: [{ b: 2 }, { c: 3}],
+                });
+
+                console.log('Target object: ', target);
             });
     });
 });
