@@ -96,50 +96,50 @@ export namespace object {
         }
         return isEmpty;
     }
-}
 
-/**
- * Deep extends target object with properties from source
- *
- * @param {any} target - extending object
- * @param {any} source - object with extending fields
- * @example
- * const target = { a: 1, b: { a: 2 } };
- * const source = { c: 2, b: { b: 2, c: 3 } }
- * const result = deepExtends(target, source);
- * // { a: 1, b: { a: 2, b: 2, c: 3 }, c: 2 }
- *
- * const target = { a: [1, 2, 3], b: [{ a: 1 }, { b: 2 }] }
- * const source = { a: [3, 4, 5], b: [{ c: 2 }, { d: 3 }, { e: 4 }] }
- * const result = deepExtends(target, source);
- * // { a: [1, 2, 3, 4, 5], b: [{ a: 1, c: 2 }, { b: 2, d: 3 }, { e: 4 }] }
- */
-export function deepExtends(
-    target?: any,
-    source?: any,
-) {
-    if (!target) {
-        target = source;
+    /**
+     * Deep extends target object with properties from source
+     *
+     * @param {any} target - extending object
+     * @param {any} source - object with extending fields
+     * @example
+     * const target = { a: 1, b: { a: 2 } };
+     * const source = { c: 2, b: { b: 2, c: 3 } }
+     * const result = deepExtends(target, source);
+     * // { a: 1, b: { a: 2, b: 2, c: 3 }, c: 2 }
+     *
+     * const target = { a: [1, 2, 3], b: [{ a: 1 }, { b: 2 }] }
+     * const source = { a: [3, 4, 5], b: [{ c: 2 }, { d: 3 }, { e: 4 }] }
+     * const result = deepExtends(target, source);
+     * // { a: [1, 2, 3, 4, 5], b: [{ a: 1, c: 2 }, { b: 2, d: 3 }, { e: 4 }] }
+     */
+    export function deepExtends(
+        target?: any,
+        source?: any,
+    ) {
+        if (!target) {
+            target = source;
+            return target;
+        }
+        if (Array.isArray(target) && Array.isArray(source)) {
+            for (let i = 0; i < source.length; i++) {
+                if (typeof source[i] === 'object') {
+                    target[i] = deepExtends(target[i], source[i]);
+                } else {
+                    target[target.length] = source[i];
+                }
+            }
+
+            target = [...new Set(target)];
+        } else if (typeof target === 'object' && typeof source === 'object') {
+            for (const [key, value] of Object.entries(source || {})) {
+                const targetValue = target[key];
+                target[key] = deepExtends(targetValue, value);
+            }
+        } else {
+            target = source;
+        }
+
         return target;
     }
-    if (Array.isArray(target) && Array.isArray(source)) {
-        for (let i = 0; i < source.length; i++) {
-            if (typeof source[i] === 'object') {
-                target[i] = deepExtends(target[i], source[i]);
-            } else {
-                target[target.length] = source[i];
-            }
-        }
-
-        target = [...new Set(target)];
-    } else if (typeof target === 'object' && typeof source === 'object') {
-        for (const [key, value] of Object.entries(source || {})) {
-            const targetValue = target[key];
-            target[key] = deepExtends(targetValue, value);
-        }
-    } else {
-        target = source;
-    }
-
-    return target;
 }
