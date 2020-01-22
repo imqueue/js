@@ -102,6 +102,21 @@ describe('object', () => {
                     field3: [1, 2, 3]
                 };
 
+                const expected =  {
+                    field1: 1,
+                    field2: {
+                        subField1: 3,
+                        subObject: {
+                            subObjectField1: 2,
+                            subObjectField2: 3,
+                        },
+                        subField2: 5,
+                    },
+                    arrayObj: [{ a: 1, b: 2}, { c: 3 }],
+                    field3: [1, 2, 3, 4, 5],
+                    field5: 4,
+                };
+
                 deepExtends(target, {
                     field5: 4,
                     field2: {
@@ -114,7 +129,7 @@ describe('object', () => {
                     arrayObj: [{ b: 2 }, { c: 3}],
                 });
 
-                console.log('Target object: ', target);
+                expect(target).deep.equals(expected);
             });
     });
 });
